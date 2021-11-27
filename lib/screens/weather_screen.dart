@@ -173,9 +173,101 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         color: Colors.white30,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '미세먼지'
+                          Column(
+                            children: [
+                              Text(
+                                'AQI(대기질지수)',
+                                style: GoogleFonts.lato(
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Image.asset(
+                                'image/bad.png',
+                                width: 37.0,
+                                height: 35.0,
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                '"매우나쁨"',
+                                style: GoogleFonts.lato(
+                                  fontSize: 14.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                '미세먼지',
+                                style: GoogleFonts.lato(
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                '174.75',
+                                style: GoogleFonts.lato(
+                                  fontSize: 24.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                '㎍/m3',
+                                style: GoogleFonts.lato(
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                '초미세먼지',
+                                style: GoogleFonts.lato(
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                '84.03',
+                                style: GoogleFonts.lato(
+                                  fontSize: 24.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                '㎍/m3',
+                                style: GoogleFonts.lato(
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
