@@ -94,7 +94,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               height: 150.0,
                             ),
                             Text(
-                              'Seoul',
+                              '$cityName',
                               style: GoogleFonts.lato(
                                 fontSize: 35.0,
                                 fontWeight: FontWeight.bold,
