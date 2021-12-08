@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_app/model/model.dart';
 
 class WeatherScreen extends StatefulWidget {
   // Network에서와는 달리 named argument를 통해서 입력받기를 원하는 데이터를
@@ -18,8 +19,10 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  Model model = Model();
   int temp;
   String cityName;
+  Widget icon;
   var date = DateTime.now();
 
   @override
@@ -34,9 +37,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
     double temp2 = weatherData['main']['temp'];
     print(temp2);
 
+    int condition = weatherData['weather']['0']['id'];
+
     temp = temp2.round(); // 반올림
     // temp = temp2.toInt(); // 이것도 가능 (버림)
     cityName = weatherData['name'];
+    icon = model.getWeatherIcon(condition);
 
     print(temp);
     print(cityName);
@@ -147,7 +153,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             ),
                             Row(
                               children: [
-                                SvgPicture.asset('svg/climacon-sun.svg'),
+                                icon,
                                 SizedBox(
                                   width: 10.0,
                                 ),
