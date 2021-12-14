@@ -23,6 +23,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   int temp;
   String cityName;
   Widget icon;
+  String des;
   var date = DateTime.now();
 
   @override
@@ -37,8 +38,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     double temp2 = weatherData['main']['temp'];
     print(temp2);
 
-    int condition = weatherData['weather']['0']['id'];
-
+    int condition = weatherData['weather'][0]['id'];
+    des = weatherData['weather'][0]['description'];
     temp = temp2.round(); // 반올림
     // temp = temp2.toInt(); // 이것도 가능 (버림)
     cityName = weatherData['name'];
@@ -158,7 +159,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                   width: 10.0,
                                 ),
                                 Text(
-                                  'clear sky',
+                                  '$des',
                                   style: GoogleFonts.lato(
                                     fontSize: 16.0,
                                     color: Colors.white,
