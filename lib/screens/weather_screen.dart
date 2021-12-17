@@ -8,11 +8,13 @@ import 'package:weather_app/model/model.dart';
 class WeatherScreen extends StatefulWidget {
   // Network에서와는 달리 named argument를 통해서 입력받기를 원하는 데이터를
   // 전달해야한다는 것임. 생성자의 {}를 주의해야 함.
-  WeatherScreen({this.parseWeatherData});
+  WeatherScreen({this.parseWeatherData, this.parseAirPollution});
 
   // 다양한 타입의 날씨 관련 데이터를 전달받을 것이기 때문에 타입을 따로 지정해주지 않음
   // dynamic 타입이라고 해줘도 됨
   final parseWeatherData;
+
+  final dynamic parseAirPollution;
 
   @override
   _WeatherScreenState createState() => _WeatherScreenState();
@@ -20,38 +22,42 @@ class WeatherScreen extends StatefulWidget {
 
 class _WeatherScreenState extends State<WeatherScreen> {
   Model model = Model();
-  int temp;
   String cityName;
+  int temp;
   Widget icon;
   String des;
+  Widget airIcon;
+  Widget airState;
+  double dust1;
+  double dust2;
   var date = DateTime.now();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    updateData(widget.parseWeatherData);
+    updateData(widget.parseWeatherData, widget.parseAirPollution);
   }
 
-  void updateData(dynamic weatherData) {
-
-    double temp2 = weatherData['main']['temp'];
-    print(temp2);
-
+  void updateData(dynamic weatherData, dynamic airData) {
+    double temp2 = weatherData['main']['temp'].toDouble();
     int condition = weatherData['weather'][0]['id'];
+    int index = airData['list'][0]['main']['aqi'];
     des = weatherData['weather'][0]['description'];
-    temp = temp2.round(); // 반올림
-    // temp = temp2.toInt(); // 이것도 가능 (버림)
+    dust1 = airData['list'][0]['components']['pm10'];
+    dust2 = airData['list'][0]['components']['pm2_5'];
+    temp = temp2.round();
     cityName = weatherData['name'];
     icon = model.getWeatherIcon(condition);
+    airIcon = model.getAirIcon(index);
+    airState = model.getAirCondition(index);
 
     print(temp);
     print(cityName);
   }
 
-  String getSystemTime(){
+  String getSystemTime() {
     var now = DateTime.now();
-
     return DateFormat("h:mm a").format(now);
   }
 
@@ -60,27 +66,30 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        // title: Text(''),
+        //title: Text(''),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         leading: IconButton(
           icon: Icon(Icons.near_me),
-          onPressed: (){},
+          onPressed: () {},
           iconSize: 30.0,
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.location_searching),
-            onPressed: (){},
+            icon: Icon(
+              Icons.location_searching,
+            ),
+            onPressed: () {},
             iconSize: 30.0,
-          ),
+          )
         ],
       ),
       body: Container(
         child: Stack(
           children: [
-            Image.asset('image/background.jpg',
-            fit: BoxFit.cover,
+            Image.asset(
+              'image/background.jpg',
+              fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
             ),
@@ -103,42 +112,31 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             Text(
                               '$cityName',
                               style: GoogleFonts.lato(
-                                fontSize: 35.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                                  fontSize: 35.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                             Row(
                               children: [
                                 TimerBuilder.periodic(
-                                    (Duration(minutes: 1)), // Duration 객체를 불러와서 보여주기를 원하는 시간단위 선택
-                                    builder: (context){
-                                      print('${getSystemTime()}');
-                                      return Text(
-                                        '${getSystemTime()}',
-                                        style: GoogleFonts.lato(
-                                          fontSize: 16.0,
-                                          color: Colors.white,
-                                        ),
-                                      );
-                                    },
+                                  (Duration(minutes: 1)),
+                                  builder: (context) {
+                                    print('${getSystemTime()}');
+                                    return Text(
+                                      '${getSystemTime()}',
+                                      style: GoogleFonts.lato(
+                                          fontSize: 16.0, color: Colors.white),
+                                    );
+                                  },
                                 ),
-                                Text(
-                                  DateFormat(' - EEEE, ').format(date),
-                                  style: GoogleFonts.lato(
-                                    fontSize: 16.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  DateFormat('d MMM, yyy').format(date),
-                                  style: GoogleFonts.lato(
-                                    fontSize: 16.0,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                Text(DateFormat(' - EEEE, ').format(date),
+                                    style: GoogleFonts.lato(
+                                        fontSize: 16.0, color: Colors.white)),
+                                Text(DateFormat('d MMM, yyy').format(date),
+                                    style: GoogleFonts.lato(
+                                        fontSize: 16.0, color: Colors.white))
                               ],
-                            ),
+                            )
                           ],
                         ),
                         Column(
@@ -147,10 +145,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             Text(
                               '$temp\u2103',
                               style: GoogleFonts.lato(
-                                fontSize: 85.0,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white,
-                              ),
+                                  fontSize: 85.0,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white),
                             ),
                             Row(
                               children: [
@@ -166,7 +163,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                   ),
                                 ),
                               ],
-                            ),
+                            )
                           ],
                         )
                       ],
@@ -194,22 +191,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               SizedBox(
                                 height: 10.0,
                               ),
-                              Image.asset(
-                                'image/bad.png',
-                                width: 37.0,
-                                height: 35.0,
-                              ),
+                              airIcon,
                               SizedBox(
                                 height: 10.0,
                               ),
-                              Text(
-                                '"매우나쁨"',
-                                style: GoogleFonts.lato(
-                                  fontSize: 14.0,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              airState,
                             ],
                           ),
                           Column(
@@ -225,7 +211,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 height: 10.0,
                               ),
                               Text(
-                                '174.75',
+                                '$dust1',
                                 style: GoogleFonts.lato(
                                   fontSize: 24.0,
                                   color: Colors.white,
@@ -237,9 +223,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               Text(
                                 '㎍/m3',
                                 style: GoogleFonts.lato(
-                                  fontSize: 14.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                    fontSize: 14.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold
                                 ),
                               ),
                             ],
@@ -257,7 +243,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 height: 10.0,
                               ),
                               Text(
-                                '84.03',
+                                '$dust2',
                                 style: GoogleFonts.lato(
                                   fontSize: 24.0,
                                   color: Colors.white,
@@ -269,20 +255,20 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               Text(
                                 '㎍/m3',
                                 style: GoogleFonts.lato(
-                                  fontSize: 14.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                    fontSize: 14.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold
                                 ),
                               ),
                             ],
                           ),
                         ],
-                      ),
+                      )
                     ],
-                  )
+                  ),
                 ],
               ),
-            ),
+            )
           ],
         ),
       ),
