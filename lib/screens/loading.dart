@@ -12,8 +12,8 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-  double latitude3;
-  double longitude3;
+  double? latitude3;
+  double? longitude3;
 
   @override
   void initState() {
@@ -30,6 +30,12 @@ class _LoadingState extends State<Loading> {
     longitude3 = myLocation.longitude2;
     print(latitude3);
     print(longitude3);
+
+    // &lang=kr -> 한국어?
+    // Network network = Network('https://api.openweathermap.org/data/2.5/weather?'
+    //     'lat=$latitude3&lon=$longitude3&lang=kr&appid=$apiKey&units=metric',
+    //     'https://api.openweathermap.org/data/2.5/air_pollution'
+    //         '?lat=$latitude3&lon=$longitude3&lang=kr&appid=$apiKey');
 
     Network network = Network('https://api.openweathermap.org/data/2.5/weather?'
         'lat=$latitude3&lon=$longitude3&appid=$apiKey&units=metric',
