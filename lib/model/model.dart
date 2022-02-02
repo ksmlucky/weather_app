@@ -3,31 +3,31 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 
 class Model {
-  Widget getWeatherIcon(int condition) {
+  Widget? getWeatherIcon(int condition) {
     if (condition < 300) {
       return SvgPicture.asset(
         'svg/climacon-colud_lightning.svg',
-        color: Colors.black87,
+        color: Colors.white,
       );
     } else if (condition < 600) {
       return SvgPicture.asset(
         'svg/climacon-cloud_rain.svg',
-        color: Colors.black87,
+        color: Colors.white,
       );
     } else if (condition == 800) {
       return SvgPicture.asset(
         'svg/climacon-sun.svg',
-        color: Colors.black87,
+        color: Colors.white,
       );
     } else if (condition <= 804) {
       return SvgPicture.asset(
         'svg/climacon-cloud_sun.svg',
-        color: Colors.black87,
+        color: Colors.white,
       );
     }
   }
 
-  Widget getAirIcon(int index) {
+  Widget? getAirIcon(int? index) {
     if (index == 1) {
       return Image.asset(
         'image/good.png',
@@ -61,12 +61,12 @@ class Model {
     }
   }
 
-  Widget getAirCondition(int index) {
+  Widget? getAirCondition(int? index) {
     if (index == 1) {
       return Text(
         '"매우좋음"',
         style: TextStyle(
-          color: Colors.indigo,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
       );
@@ -74,7 +74,7 @@ class Model {
       return Text(
         '"좋음"',
         style: TextStyle(
-          color: Colors.indigo,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
       );
@@ -82,7 +82,7 @@ class Model {
       return Text(
         '"보통"',
         style: TextStyle(
-          color: Colors.black87,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
       );
@@ -90,7 +90,7 @@ class Model {
       return Text(
         '"나쁨"',
         style: TextStyle(
-          color: Colors.black87,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
       );
@@ -98,7 +98,7 @@ class Model {
       return Text(
         '"매우나쁨"',
         style: TextStyle(
-          color: Colors.black87,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
       );
